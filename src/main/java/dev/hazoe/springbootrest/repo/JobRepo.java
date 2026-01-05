@@ -32,11 +32,11 @@ public class JobRepo {
                     List.of("iOS Development", "Android Development", "Mobile App"))
     ));
 
-    public List<JobPost> getJobs(){
+    public List<JobPost> getJobs() {
         return jobs;
     }
 
-    public void addJob(JobPost job){
+    public void addJob(JobPost job) {
         jobs.add(job);
     }
 
@@ -45,5 +45,30 @@ public class JobRepo {
                 .filter(job -> job.getPostId() == postId)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void updateJob(JobPost jobPost) {
+        jobs.stream()
+                .filter(job -> job.getPostId() == jobPost.getPostId())
+                .forEach(job -> {
+                    job.setPostDesc(jobPost.getPostDesc());
+                    job.setPostProfile(jobPost.getPostProfile());
+                    job.setReqExperience(jobPost.getReqExperience());
+                    job.setPostTechStack(jobPost.getPostTechStack());
+                });
+    }
+
+    public boolean deleteJob(int postId) {
+        int index = -1;
+        for (JobPost job : jobs) {
+            if (job.getPostId() == postId) {
+                index = jobs.indexOf(job);
+            }
+        }
+        if (index >= 0) {
+            jobs.remove(index);
+            return true;
+        }
+        return false;
     }
 }
