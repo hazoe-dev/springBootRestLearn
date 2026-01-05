@@ -18,7 +18,7 @@ public class JobRestController {
         this.service = service;
     }
 
-    @GetMapping("jobPosts")
+    @GetMapping(path="jobPosts", produces = {"application/xml"})
     public List<JobPost> getJobPosts() {
         return service.getJobs();
     }
@@ -33,7 +33,7 @@ public class JobRestController {
         return service.getJob(postId);
     }
 
-    @PostMapping ("post")
+    @PostMapping (path="post", consumes = {"application/xml"})
     public JobPost createPost(@RequestBody JobPost jobPost) {
         service.addJob(jobPost);
         return service.getJob(jobPost.getPostId());
