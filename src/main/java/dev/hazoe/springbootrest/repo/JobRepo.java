@@ -39,4 +39,11 @@ public class JobRepo {
     public void addJob(JobPost job){
         jobs.add(job);
     }
+
+    public JobPost getJob(int postId) {
+        return jobs.stream()
+                .filter(job -> job.getPostId() == postId)
+                .findFirst()
+                .orElse(null);
+    }
 }
