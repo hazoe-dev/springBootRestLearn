@@ -32,4 +32,10 @@ public class JobRestController {
     public JobPost getPost(@PathVariable("id")int postId) {
         return service.getJob(postId);
     }
+
+    @PostMapping ("post")
+    public JobPost createPost(@RequestBody JobPost jobPost) {
+        service.addJob(jobPost);
+        return service.getJob(jobPost.getPostId());
+    }
 }
