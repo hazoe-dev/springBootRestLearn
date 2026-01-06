@@ -18,7 +18,7 @@ public class JobRestController {
         this.service = service;
     }
 
-    @GetMapping(path="jobPosts", produces = {"application/xml"})
+    @GetMapping(path = "jobPosts", produces = {"application/xml"})
     public List<JobPost> getJobPosts() {
         return service.getJobs();
     }
@@ -29,24 +29,29 @@ public class JobRestController {
     }
 
     @GetMapping("post/{id}")
-    public JobPost getPost(@PathVariable("id")int postId) {
+    public JobPost getPost(@PathVariable("id") int postId) {
         return service.getJob(postId);
     }
 
-    @PostMapping (path="post", consumes = {"application/xml"})
+    @PostMapping(path = "post", consumes = {"application/xml"})
     public JobPost createPost(@RequestBody JobPost jobPost) {
         service.addJob(jobPost);
         return service.getJob(jobPost.getPostId());
     }
 
-    @PutMapping ("post")
+    @PutMapping("post")
     public JobPost updatePost(@RequestBody JobPost jobPost) {
         service.updateJob(jobPost);
         return service.getJob(jobPost.getPostId());
     }
 
     @DeleteMapping("post/{id}")
-    public boolean deletePost(@PathVariable("id")int postId) {
-        return service.deleteJob(postId);
+    public void deletePost(@PathVariable("id") int postId) {
+        service.deleteJob(postId);
+    }
+
+    @GetMapping("load")
+    public void loadData() {
+        service.loadData();
     }
 }
