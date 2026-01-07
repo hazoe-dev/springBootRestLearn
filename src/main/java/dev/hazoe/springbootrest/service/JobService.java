@@ -65,4 +65,8 @@ public class JobService {
         repo.saveAll(jobs);
         return "success";
     }
+
+    public List<JobPost> searchJob(String keyword) {
+        return repo.findByPostProfileContainingOrPostDescContaining(keyword, keyword);
+    }
 }
