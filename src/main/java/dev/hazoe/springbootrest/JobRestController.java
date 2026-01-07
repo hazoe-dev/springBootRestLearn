@@ -33,7 +33,7 @@ public class JobRestController {
         return service.getJob(postId);
     }
 
-    @PostMapping(path = "post", consumes = {"application/xml"})
+    @PostMapping(path = "post", consumes = {"application/json"})
     public JobPost createPost(@RequestBody JobPost jobPost) {
         service.addJob(jobPost);
         return service.getJob(jobPost.getPostId());
@@ -55,7 +55,7 @@ public class JobRestController {
         service.loadData();
     }
 
-    @GetMapping("post/keyword/{keyword}")
+    @GetMapping("posts/keyword/{keyword}")
     public List<JobPost> searchPost(@PathVariable("keyword") String keyword) {
         return service.searchJob(keyword);
     }
