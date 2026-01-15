@@ -59,7 +59,18 @@ public class JobService {
 
 
                 new JobPost(5, "Mobile App Developer", "Experience in mobile app development for iOS and Android", 3,
-                        List.of("iOS Development", "Android Development", "Mobile App"))
+                        List.of("iOS Development", "Android Development", "Mobile App")),
+                new JobPost(6, "Software Engineer", "Exciting opportunity for a skilled software engineer.", 3,
+                        List.of("Java", "Spring", "SQL")),
+                new JobPost(7, "Data Scientist", "Join our data science team and work on cutting-edge projects.", 5,
+                        List.of("Python", "Machine Learning", "TensorFlow")),
+                new JobPost(8, "Frontend Developer", "Create amazing user interfaces with our talented frontend team.", 2,
+                        List.of("JavaScript", "React", "CSS")),
+                new JobPost(9, "Network Engineer", "Design and maintain our robust network infrastructure.", 4,
+                        List.of("Cisco", "Routing", "Firewalls")),
+                new JobPost(10, "UX Designer", "Shape the user experience with your creative design skills.", 3,
+                        List.of("UI/UX Design", "Adobe XD", "Prototyping"))
+
         ));
 
         repo.saveAll(jobs);
