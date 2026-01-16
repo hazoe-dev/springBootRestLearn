@@ -24,7 +24,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationProvider authenticationManagerBean(
+    public AuthenticationProvider authenticationProvider(
             UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder
     ) {
