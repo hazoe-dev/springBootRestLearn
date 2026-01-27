@@ -263,4 +263,172 @@ docker-compose   ❌ (deprecated)
 
 → Lúc này chuyển sang **Kubernetes**
 
+## 7️⃣ Network trong Docker Compose
+
+
+> ❌ **`depends_on` KHÔNG liên quan gì tới network**  
+> ✅ **Network trong Docker Compose được tạo tự động**
+
+---
+
+### 1️⃣ `depends_on` vs `network`
+
+👉 **Không cần set network thủ công trong đa số trường hợp**  
+👉 **`depends_on` chỉ để điều khiển thứ tự start**, KHÔNG phải để kết nối network
+
+---
+
+### 2️⃣ Docker Compose tự làm gì với network?
+
+Khi bạn chạy:
+
+```bash
+docker compose up
+```
+
+Compose **tự động tạo**:
+
+```text
+<project_name>_default
+```
+
+Ví dụ:
+
+```text
+springbootweb1st_default
+```
+
+Tất cả service:
+
+* Nằm chung network
+* Nhìn thấy nhau
+* Gọi nhau bằng **tên service**
+
+
+### 3️⃣ Kết nối giữa các container hoạt động thế nào?
+
+Ví dụ:
+
+```yaml
+services:
+  app:
+    image: myapp
+  db:
+    image: postgres
+```
+
+👉 `app` gọi DB như sau:
+
+```text
+jdbc:postgresql://db:5432/mydb
+```
+
+📌 **KHÔNG BAO GIỜ** dùng:
+
+```text
+localhost
+```
+
+Vì:
+
+* `localhost` trong container = chính nó
+* Không phải container khác
+
+
+### 4️⃣ Vậy `depends_on` dùng để làm gì?
+
+```yaml
+depends_on:
+  - db
+```
+
+Nó chỉ đảm bảo:
+
+1. `db` container **được start trước**
+2. ❌ **Không đảm bảo DB sẵn sàng**
+
+⚠️ Đây là chỗ nhiều người sai:
+
+* App start
+* DB chưa accept connection
+* App crash
+
+
+### 5️⃣ Khi nào KHÔNG cần khai báo network?
+
+✅ Trường hợp 90% project:
+
+```yaml
+services:
+  app:
+    depends_on:
+      - db
+  db:
+    image: postgres
+```
+
+→ **KHÔNG cần network**
+→ Compose tự xử lý đủ rồi
+
+
+### 6️⃣ Khi nào BẮT BUỘC phải set network?
+
+#### 🔹 1. Muốn tách network (security)
+
+```yaml
+networks:
+  backend:
+  frontend:
+```
+
+```yaml
+services:
+  app:
+    networks:
+      - backend
+      - frontend
+  db:
+    networks:
+      - backend
+```
+
+👉 Frontend **không thấy DB**
+
+
+#### 🔹 2. Nhiều compose dùng chung network
+
+Ví dụ:
+
+* `infra-compose.yml` (db, redis)
+* `app-compose.yml` (backend)
+
+```yaml
+networks:
+  shared-net:
+    external: true
+```
+
+
+#### 🔹 3. Muốn custom subnet / IP (hiếm)
+
+Dùng cho:
+
+* Legacy system
+* Firewall rule
+* Debug đặc biệt
+
+
+### 7️⃣ Tóm tắt 🧠
+
+| Thứ          | Có cần set không?     |
+| ------------ | --------------------- |
+| network      | ❌ (đa số)             |
+| depends_on   | ✅ (thứ tự start)      |
+| service name | ✅ (dùng làm hostname) |
+| localhost    | ❌ trong container     |
+
+> **Network trong Docker Compose là auto**  
+> **`depends_on` KHÔNG tạo network, KHÔNG đảm bảo service ready**
+
+
 
