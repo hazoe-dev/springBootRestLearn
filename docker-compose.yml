@@ -6,7 +6,8 @@ services:
     ports:
       - "8083:8080"
     depends_on:
-      - db
+      db:
+          condition: service_healthy
     networks:
       - my-network
 
@@ -20,8 +21,19 @@ services:
       - "5432"
     networks:
       - my-network
+    volumes:
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d hazoe" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
   my-network:
     driver: bridge
+
+volumes:
+  db-data:
+
 
